@@ -1,0 +1,46 @@
+--Se crea la base de datos con el nombre tienda_ropa
+CREATE DATABASE IF NOT EXISTS `tienda_ropa`
+DEFAULT CHARACTER SET utf8mb4
+COLLATE utf8mb4_0900_ai_ci;
+
+-- nos cambiamos a la base de datos
+USE `tienda_ropa`;
+
+-- Tabla: productos
+DROP TABLE IF EXISTS `productos`;
+CREATE TABLE `productos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` text,
+  `precio` decimal(10,2) NOT NULL,
+  `stock` int DEFAULT '0',
+  `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+--CHARSET es para que soporte todos los caracteres Unicode
+
+-- Tabla: ventas
+DROP TABLE IF EXISTS `ventas`;
+CREATE TABLE `ventas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `total_iva` decimal(10,2) NOT NULL,
+  `fecha_venta` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Tabla: detalle_ventas
+DROP TABLE IF EXISTS `detalle_ventas`;
+CREATE TABLE `detalle_ventas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `venta_id` int NOT NULL,
+  `producto_id` int NOT NULL,
+  `cantidad` int NOT NULL,
+  `precio_unitario` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `venta_id` (`venta_id`),
+  KEY `producto_id` (`producto_id`),
+  CONSTRAINT `detalle_ventas_ibfk_1`
+    FOREIGN KEY (`venta_id`) REFERENCES `ventas` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `detalle_ventas_ibfk_2`
+    FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
