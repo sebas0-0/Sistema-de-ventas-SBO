@@ -11,7 +11,7 @@ require_once 'config/database.php';
 require_once 'models/Producto.php';
 require_once 'models/Venta.php';
 
-// lógica de Enrutamiento Simple
+// aqui esta la lógica de Enrutamiento Simple
 // se determina la acción quiere realizar el usuario
 $controller = isset($_GET['c']) ? $_GET['c'] : 'Producto';
 $action = isset($_GET['a']) ? $_GET['a'] : 'index';
@@ -19,7 +19,7 @@ $action = isset($_GET['a']) ? $_GET['a'] : 'index';
 // se carga del Controlador correspondiente
 $controllerPath = 'controllers/' . $controller . 'Controller.php';
 
-# se verifica que el archivo del controlador exista antes de requerirlo y ejecutar la acción solicitada
+// se verifica que el archivo del controlador exista y ejecutar la acción solicitada
 if (file_exists($controllerPath)) {
    require_once $controllerPath;
    $controllerName = $controller . 'Controller';
@@ -28,7 +28,7 @@ if (file_exists($controllerPath)) {
    // se ejecuta el método solicitado
    if (method_exists($objController, $action)) {
       $objController->$action();
-      // se muestra un mensaje de éxito si se redirige desde una acción exitosa
+      // se muestra el mensaje de éxito si se redirige desde una acción exitosa
    } else {
       echo "Error: La acción '$action' no existe.";
    }
